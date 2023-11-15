@@ -1,0 +1,15 @@
+{
+  "name": "@junglebot/api",
+  "author": "Benjamin Dos Santos",
+  "type": "module",
+  "scripts": {
+    "dev": "bun run --hot src/index.ts"
+  },
+  "dependencies": {
+    "hono": "^3.10.1"
+  },
+  "devDependencies": {
+    "@junglebot/tsconfig": "workspace:*",
+    "bun-types": "^1.0.7"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "name": "junglebot",
+  "author": "Benjamin Dos Santos",
+  "scripts": {
+    "format": "prettier . -w"
+  },
+  "devDependencies": {
+    "prettier": "^3.1.0"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ]
+}
