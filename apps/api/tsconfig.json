@@ -6,7 +6,11 @@
     "strict": true,
     "jsx": "react-jsx",
     "jsxImportSource": "hono/jsx",
-    "types": ["bun-types"]
+    "types": ["bun-types"],
+    "paths": {
+      "@app": ["./src/app/index.ts"],
+      "@features": ["./src/features/index.ts"]
+    }
   },
-  "include": ["src"],
+  "include": ["src"]
 }

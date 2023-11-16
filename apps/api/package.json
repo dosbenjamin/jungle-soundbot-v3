@@ -6,7 +6,10 @@
     "dev": "bun run --hot src/index.ts"
   },
   "dependencies": {
-    "hono": "^3.10.1"
+    "@hono/swagger-ui": "^0.1.0",
+    "@hono/zod-openapi": "^0.8.5",
+    "hono": "^3.10.1",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@junglebot/tsconfig": "workspace:*",
