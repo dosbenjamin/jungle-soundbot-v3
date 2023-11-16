@@ -1,8 +1,8 @@
 import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi';
 
-export const route = new OpenAPIHono();
+const router = new OpenAPIHono();
 
-route.openapi(
+export const routes = router.openapi(
   createRoute({
     method: 'get',
     path: '/',
@@ -15,7 +15,7 @@ route.openapi(
               .object({
                 say: z.string().min(1),
               })
-              .openapi('SayHelloResponse'),
+              .openapi('HelloResponse'),
           },
         },
         description: 'Say hello',

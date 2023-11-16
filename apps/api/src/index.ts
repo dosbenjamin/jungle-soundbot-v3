@@ -1,1 +1,1 @@
-export { app as default } from '@app';
+export { router as default, type APIRoutes } from './app';

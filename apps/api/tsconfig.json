@@ -8,6 +8,7 @@
     "jsxImportSource": "hono/jsx",
     "types": ["bun-types"],
     "paths": {
+      "@env": ["./src/env.ts"],
       "@app": ["./src/app/index.ts"],
       "@features": ["./src/features/index.ts"]
     }

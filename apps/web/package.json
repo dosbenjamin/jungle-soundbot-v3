@@ -8,7 +8,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "solid-js": "^1.7.8"
+    "@t3-oss/env-core": "^0.7.1",
+    "hono": "^3.10.1",
+    "solid-js": "^1.7.8",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@junglebot/tsconfig": "workspace:*",
