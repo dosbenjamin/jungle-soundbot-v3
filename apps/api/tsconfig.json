@@ -13,5 +13,5 @@
       "@features": ["./src/features/index.ts"]
     }
   },
-  "include": ["src"]
+  "include": ["./src"]
 }

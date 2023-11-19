@@ -23,6 +23,6 @@
       "@api": ["../api/src/index.ts"]
     }
   },
-  "include": ["src"],
+  "include": ["./src"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
