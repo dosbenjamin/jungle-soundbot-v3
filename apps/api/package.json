@@ -10,13 +10,16 @@
     "@hono/swagger-ui": "^0.1.0",
     "@hono/zod-openapi": "^0.8.5",
     "@t3-oss/env-core": "^0.7.1",
+    "drizzle-orm": "^0.29.0",
     "hono": "^3.10.1",
+    "postgres": "^3.4.3",
     "zod": "^3.22.4"
   },
   "devDependencies": {
     "@junglebot/eslint-config-custom": "workspace:*",
     "@junglebot/tsconfig": "workspace:*",
     "bun-types": "^1.0.7",
+    "drizzle-kit": "^0.20.4",
     "eslint": "^8.54.0"
   }
 }

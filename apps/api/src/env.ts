@@ -4,6 +4,7 @@ import { z } from 'zod';
 export const env = createEnv({
   server: {
     WEB_APP_URL: z.string().url(),
+    DATABASE_URL: z.string(),
   },
   runtimeEnv: Bun.env,
 });
