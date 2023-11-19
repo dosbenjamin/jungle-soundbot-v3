@@ -10,6 +10,7 @@
     "paths": {
       "@env": ["./src/env.ts"],
       "@app": ["./src/app/index.ts"],
+      "@entities": ["./src/entities/index.ts"],
       "@features": ["./src/features/index.ts"]
     }
   },
