@@ -4,8 +4,8 @@ import { eq } from 'drizzle-orm';
 
 export const getSounds = () => database.query.sounds.findMany();
 
-export const getSoundById = (id: string) => {
+export const getSoundByName = (name: string) => {
   return database.query.sounds.findFirst({
-    where: eq(soundsTable.id, id),
+    where: eq(soundsTable.name, name),
   });
 };

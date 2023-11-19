@@ -8,11 +8,11 @@
     "jsxImportSource": "hono/jsx",
     "types": ["bun-types"],
     "paths": {
-      "@env": ["./src/env.ts"],
+      "@env": ["./env.ts"],
       "@app": ["./src/app/index.ts"],
-      "@entities": ["./src/entities/index.ts"],
+      "@shared": ["./src/shared/index.ts"],
       "@features": ["./src/features/index.ts"]
     }
   },
-  "include": ["./src"]
+  "include": ["./src", "./drizzle.config.ts", "./env.ts"]
 }

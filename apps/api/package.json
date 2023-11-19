@@ -4,12 +4,15 @@
   "type": "module",
   "scripts": {
     "dev": "bun run --hot ./src/index.ts",
+    "generate": "drizzle-kit generate:pg",
+    "studio": "drizzle-kit studio",
     "lint": "eslint ."
   },
   "dependencies": {
     "@hono/swagger-ui": "^0.1.0",
     "@hono/zod-openapi": "^0.8.5",
     "@t3-oss/env-core": "^0.7.1",
+    "cloudinary": "^1.41.0",
     "drizzle-orm": "^0.29.0",
     "drizzle-zod": "^0.5.1",
     "hono": "^3.10.1",
@@ -21,6 +24,7 @@
     "@junglebot/tsconfig": "workspace:*",
     "bun-types": "^1.0.7",
     "drizzle-kit": "^0.20.4",
-    "eslint": "^8.54.0"
+    "eslint": "^8.54.0",
+    "pg": "^8.11.3"
   }
 }
