@@ -1,13 +1,12 @@
 import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi';
-import { ErrorSchema } from '@shared/errors/errors.schema';
-import { SoundMutationSchema, SoundQuerySchema } from './sounds.schema';
-import { getSoundByName, getSounds } from './sounds.queries';
-import { createSound } from './sounds.mutations';
-import { FileSchema } from '@shared/files/files.schema';
+import { ErrorSchema } from '@shared/errors/errors.schemas';
+import { FileSchema } from '@shared/files/files.schemas';
+import { SoundMutationSchema, SoundQuerySchema } from './sounds.schemas';
+import { getSoundByName, getSounds, createSound } from './sounds.repository';
 
 const router = new OpenAPIHono();
 
-export const soundsRoutes = router
+export const soundsRouter = router
   .openapi(
     createRoute({
       method: 'get',
@@ -86,7 +85,7 @@ export const soundsRoutes = router
                   format: 'binary',
                 }),
               }).openapi('SoundRequest', {
-                required: ['name', 'author', 'file'],
+                required: ['command', 'author', 'file'],
               }),
             },
           },
@@ -101,13 +100,13 @@ export const soundsRoutes = router
           },
           description: 'The created sound',
         },
-        400: {
+        404: {
           content: {
             'application/json': {
               schema: ErrorSchema,
             },
           },
-          description: 'Validation error',
+          description: 'The requested sound was not found',
         },
       },
     }),

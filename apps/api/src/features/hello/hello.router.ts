@@ -2,7 +2,7 @@ import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi';
 
 const router = new OpenAPIHono();
 
-export const helloRoutes = router.openapi(
+export const helloRouter = router.openapi(
   createRoute({
     method: 'get',
     path: '/',

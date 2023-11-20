@@ -2,17 +2,17 @@ import { swaggerUI } from '@hono/swagger-ui';
 import { cors } from 'hono/cors';
 import { OpenAPIHono } from '@hono/zod-openapi';
 import { env } from '@env';
-import { soundsRoutes } from '../features/sounds/sounds.routes';
-import { helloRoutes } from '../features/hello/hello.routes';
+import { soundsRouter } from '../features/sounds/sounds.router';
+import { helloRouter } from '../features/hello/hello.router';
 
 export const router = new OpenAPIHono();
-export type APIRoutes = typeof routes;
+export type API = typeof api;
 
-const routes = router
+const api = router
   .use('*', cors({ origin: [env.WEB_APP_URL] }))
   .get('/swagger', swaggerUI({ url: '/doc' }))
-  .route('/hello', helloRoutes)
-  .route('/sounds', soundsRoutes);
+  .route('/hello', helloRouter)
+  .route('/sounds', soundsRouter);
 
 router.doc31('/doc', {
   openapi: '3.1.0',

@@ -5,10 +5,10 @@ export const env = createEnv({
   server: {
     WEB_APP_URL: z.string().url(),
     DATABASE_URL: z.string(),
-    CLOUDINARY_CLOUD_NAME: z.string(),
-    CLOUDINARY_FOLDER_NAME: z.string(),
-    CLOUDINARY_API_KEY: z.string(),
-    CLOUDINARY_API_SECRET: z.string(),
+    S3_URL: z.string().url(),
+    S3_BUCKET: z.string(),
+    S3_ACCESS_KEY_ID: z.string(),
+    S3_SECRET_ACCESS_KEY: z.string(),
   },
   runtimeEnv: process.env,
 });
