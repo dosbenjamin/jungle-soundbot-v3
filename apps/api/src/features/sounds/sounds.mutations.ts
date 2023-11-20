@@ -1,6 +1,6 @@
-import { database } from '@app';
-import { uploadFile } from '@shared';
-import { NewSound, soundsTable } from './schema';
+import { database } from '@app/database';
+import { uploadFile } from '@shared/files/files.services';
+import { NewSound, soundsTable } from './sounds.schema';
 
 export const createSound = async (newSound: NewSound) => {
   const { url } = uploadFile();

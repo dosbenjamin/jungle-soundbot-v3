@@ -1,5 +1,5 @@
-import { database } from '@app';
-import { soundsTable } from '..';
+import { database } from '@app/database';
+import { soundsTable } from './sounds.schema';
 import { eq } from 'drizzle-orm';
 
 export const getSounds = () => database.query.sounds.findMany();

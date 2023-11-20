@@ -2,7 +2,8 @@ import { swaggerUI } from '@hono/swagger-ui';
 import { cors } from 'hono/cors';
 import { OpenAPIHono } from '@hono/zod-openapi';
 import { env } from '@env';
-import { helloRoutes, soundsRoutes } from '../features';
+import { soundsRoutes } from '../features/sounds/sounds.routes';
+import { helloRoutes } from '../features/hello/hello.routes';
 
 export const router = new OpenAPIHono();
 export type APIRoutes = typeof routes;

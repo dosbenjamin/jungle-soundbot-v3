@@ -9,9 +9,9 @@
     "types": ["bun-types"],
     "paths": {
       "@env": ["./env.ts"],
-      "@app": ["./src/app/index.ts"],
-      "@shared": ["./src/shared/index.ts"],
-      "@features": ["./src/features/index.ts"]
+      "@app/*": ["./src/app/*"],
+      "@shared/*": ["./src/shared/*"],
+      "@features/*": ["./src/features/*"]
     }
   },
   "include": ["./src", "./drizzle.config.ts", "./env.ts"]

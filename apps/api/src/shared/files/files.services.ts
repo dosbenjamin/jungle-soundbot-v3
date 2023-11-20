@@ -1,4 +1,4 @@
-import { UploadedFile } from './types';
+import { UploadedFile } from './files.types';
 
 export const uploadFile = (): UploadedFile => {
   // const arrayBuffer = await file.arrayBuffer().then(({ byteLength }) => byteLength.toString());

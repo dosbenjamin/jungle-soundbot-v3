@@ -1,8 +1,8 @@
 import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi';
-import { ErrorSchema } from '@shared';
-import { SoundMutationSchema, SoundQuerySchema } from './schema';
-import { getSoundByName, getSounds } from './queries';
-import { createSound } from './mutations';
+import { ErrorSchema } from '@shared/errors/errors.schema';
+import { SoundMutationSchema, SoundQuerySchema } from './sounds.schema';
+import { getSoundByName, getSounds } from './sounds.queries';
+import { createSound } from './sounds.mutations';
 
 const router = new OpenAPIHono();
 
