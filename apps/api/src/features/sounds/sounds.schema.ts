@@ -1,3 +1,4 @@
+import { FileSchema } from '@shared/files/files.schema';
 import { pgTable, text, uuid } from 'drizzle-orm/pg-core';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
@@ -15,7 +16,7 @@ export const SoundMutationSchema = createInsertSchema(soundsTable, {
   author: ({ author }) => author.min(1).trim(),
 })
   .omit({ id: true, url: true })
-  .extend({ file: z.instanceof(Blob, { fatal: false }) });
+  .extend({ file: FileSchema });
 
 export type Sound = z.infer<typeof SoundQuerySchema>;
 export type NewSound = z.infer<typeof SoundMutationSchema>;

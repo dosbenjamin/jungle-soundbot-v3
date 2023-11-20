@@ -3,6 +3,7 @@ import { ErrorSchema } from '@shared/errors/errors.schema';
 import { SoundMutationSchema, SoundQuerySchema } from './sounds.schema';
 import { getSoundByName, getSounds } from './sounds.queries';
 import { createSound } from './sounds.mutations';
+import { FileSchema } from '@shared/files/files.schema';
 
 const router = new OpenAPIHono();
 
@@ -79,19 +80,12 @@ export const soundsRoutes = router
         body: {
           content: {
             'multipart/form-data': {
-              schema: SoundMutationSchema.openapi('SoundRequest', {
-                properties: {
-                  name: {
-                    type: 'string',
-                  },
-                  author: {
-                    type: 'string',
-                  },
-                  file: {
-                    type: 'string',
-                    format: 'binary',
-                  },
-                },
+              schema: SoundMutationSchema.extend({
+                file: FileSchema.openapi({
+                  type: 'string',
+                  format: 'binary',
+                }),
+              }).openapi('SoundRequest', {
                 required: ['name', 'author', 'file'],
               }),
             },
