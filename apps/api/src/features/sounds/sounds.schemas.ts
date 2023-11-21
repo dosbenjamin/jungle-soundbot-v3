@@ -8,7 +8,7 @@ export const SoundMutationSchema = createInsertSchema(sound, {
   name: ({ name }) => name.min(1).trim(),
   author: ({ author }) => author.min(1).trim(),
 })
-  .omit({ id: true, objectId: true, createdAt: true })
+  .omit({ id: true, mimeType: true, fileId: true, createdAt: true })
   .extend({ file: FileSchema });
 
 export type Sound = z.infer<typeof SoundQuerySchema>;

@@ -15,7 +15,7 @@ export const createSound = async ({ file, ...newSound }: NewSound): Promise<Soun
 
   const [createdSound] = await database
     .insert(sound)
-    .values({ ...newSound, objectId: id })
+    .values({ ...newSound, fileId: id, mimeType: file.type })
     .returning();
 
   return createdSound;

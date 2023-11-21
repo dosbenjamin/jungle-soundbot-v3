@@ -1,4 +1,5 @@
-import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi';
+import { OpenAPIHono, createRoute } from '@hono/zod-openapi';
+import { HelloQuerySchema } from './hello.schemas';
 
 const router = new OpenAPIHono();
 
@@ -11,11 +12,7 @@ export const helloRouter = router.openapi(
       200: {
         content: {
           'application/json': {
-            schema: z
-              .object({
-                say: z.string(),
-              })
-              .openapi('HelloResponse'),
+            schema: HelloQuerySchema.openapi('HelloResponse'),
           },
         },
         description: 'Say hello',

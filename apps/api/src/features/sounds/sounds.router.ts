@@ -85,7 +85,7 @@ export const soundsRouter = router
                   format: 'binary',
                 }),
               }).openapi('SoundRequest', {
-                required: ['command', 'author', 'file'],
+                required: ['name', 'author', 'file'],
               }),
             },
           },

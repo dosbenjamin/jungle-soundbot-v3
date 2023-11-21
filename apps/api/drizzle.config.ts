@@ -2,7 +2,7 @@ import { env } from './env';
 import type { Config } from 'drizzle-kit';
 
 const config: Config = {
-  schema: './src/**/*.schema.ts',
+  schema: './src/**/*.model.ts',
   out: './drizzle',
   driver: 'pg',
   dbCredentials: {

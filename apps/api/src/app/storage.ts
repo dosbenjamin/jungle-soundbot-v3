@@ -12,12 +12,13 @@ const s3 = new S3Client({
 
 export type UploadedFile = {
   id: string;
-  body: string | undefined;
+  blob: Blob;
+  buffer: Buffer;
 };
 
-export const uploadFile = async (file: Blob): Promise<UploadedFile> => {
+export const uploadFile = async (blob: Blob): Promise<UploadedFile> => {
   const id = crypto.randomUUID();
-  const buffer = Buffer.from(await file.arrayBuffer());
+  const buffer = Buffer.from(await blob.arrayBuffer());
 
   await s3.send(
     new PutObjectCommand({
@@ -27,10 +28,10 @@ export const uploadFile = async (file: Blob): Promise<UploadedFile> => {
     }),
   );
 
-  return { id, body: buffer.toString() };
+  return { id, blob, buffer };
 };
 
-export const downloadFile = async (id: string): Promise<UploadedFile> => {
+export const downloadFile = async (id: string): Promise<UploadedFile | undefined> => {
   const { Body: body } = await s3.send(
     new GetObjectCommand({
       Bucket: env.S3_BUCKET,
@@ -38,5 +39,6 @@ export const downloadFile = async (id: string): Promise<UploadedFile> => {
     }),
   );
 
-  return { id, body: await body?.transformToString() };
+  const buffer = body && Buffer.from(await body.transformToByteArray());
+  return buffer ? { id, blob: new Blob([buffer]), buffer } : undefined;
 };
