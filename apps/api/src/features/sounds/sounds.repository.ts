@@ -1,22 +1,39 @@
-import { eq } from 'drizzle-orm';
 import { database } from '@app/database';
-import { uploadFile } from '@app/storage';
-import { NewSound, Sound } from './sounds.schemas';
-import { sound } from './sounds.model';
+import { getSignedFileUrl, putFile } from '@app/storage';
+import { NewSound, Sound, SoundFilter } from './sounds.schemas';
+import { soundModel } from './sounds.model';
+import { eq, or } from 'drizzle-orm';
 
-export const getSounds = (): Promise<Sound[]> => database.query.sounds.findMany().execute();
+export const getSounds = async ({ name, author }: SoundFilter): Promise<Sound[]> => {
+  const sounds = await database
+    .select()
+    .from(soundModel)
+    .where(or(name ? eq(soundModel.name, name) : undefined, author ? eq(soundModel.author, author) : undefined))
+    .execute();
 
-export const getSoundByName = (name: string): Promise<Sound | undefined> => {
-  return database.query.sounds.findFirst({ where: eq(sound.name, name) }).execute();
+  return Promise.all(
+    sounds.map(async ({ fileId, ...sound }) => ({
+      ...sound,
+      fileUrl: (await getSignedFileUrl(fileId)).url,
+    })),
+  );
 };
 
 export const createSound = async ({ file, ...newSound }: NewSound): Promise<Sound | undefined> => {
-  const { id } = await uploadFile(file);
+  const { id } = await putFile(file);
 
-  const [createdSound] = await database
-    .insert(sound)
-    .values({ ...newSound, fileId: id, mimeType: file.type })
+  const [sound] = await database
+    .insert(soundModel)
+    .values({ ...newSound, fileId: id })
     .returning();
 
-  return createdSound;
+  return (
+    sound && {
+      id: sound.id,
+      author: sound.author,
+      createdAt: sound.createdAt,
+      name: sound.name,
+      fileUrl: (await getSignedFileUrl(sound.fileId)).url,
+    }
+  );
 };

@@ -1,8 +1,8 @@
-import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi';
+import { OpenAPIHono, createRoute } from '@hono/zod-openapi';
 import { ErrorSchema } from '@shared/errors/errors.schemas';
 import { FileSchema } from '@shared/files/files.schemas';
-import { SoundMutationSchema, SoundQuerySchema } from './sounds.schemas';
-import { getSoundByName, getSounds, createSound } from './sounds.repository';
+import { SoundFilterSchema, SoundMutationSchema, SoundQuerySchema } from './sounds.schemas';
+import { getSounds, createSound } from './sounds.repository';
 
 const router = new OpenAPIHono();
 
@@ -12,6 +12,9 @@ export const soundsRouter = router
       method: 'get',
       path: '/',
       tags: ['Sounds'],
+      request: {
+        query: SoundFilterSchema,
+      },
       responses: {
         200: {
           content: {
@@ -24,50 +27,8 @@ export const soundsRouter = router
       },
     }),
     async (context) => {
-      const sounds = await getSounds();
+      const sounds = await getSounds(context.req.valid('query'));
       return context.jsonT(sounds);
-    },
-  )
-  .openapi(
-    createRoute({
-      method: 'get',
-      path: '/:name',
-      tags: ['Sounds'],
-      request: {
-        params: z.object({
-          name: z.string(),
-        }),
-      },
-      responses: {
-        200: {
-          content: {
-            'application/json': {
-              schema: SoundQuerySchema.openapi('SoundResponse'),
-            },
-          },
-          description: 'A single sound',
-        },
-        404: {
-          content: {
-            'application/json': {
-              schema: ErrorSchema,
-            },
-          },
-          description: 'Not found error',
-        },
-      },
-    }),
-    async (context) => {
-      const sound = await getSoundByName(context.req.valid('param').name);
-      return sound
-        ? context.jsonT(sound)
-        : context.jsonT(
-            {
-              code: 404,
-              error: 'The requested sound was not found',
-            },
-            404,
-          );
     },
   )
   .openapi(

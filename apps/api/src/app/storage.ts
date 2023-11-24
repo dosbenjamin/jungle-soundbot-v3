@@ -1,3 +1,4 @@
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { GetObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { env } from '@env';
 
@@ -10,13 +11,11 @@ const s3 = new S3Client({
   },
 });
 
-export type UploadedFile = {
+type UploadedFile = {
   id: string;
-  blob: Blob;
-  buffer: Buffer;
 };
 
-export const uploadFile = async (blob: Blob): Promise<UploadedFile> => {
+export const putFile = async (blob: Blob): Promise<UploadedFile> => {
   const id = crypto.randomUUID();
   const buffer = Buffer.from(await blob.arrayBuffer());
 
@@ -25,20 +24,25 @@ export const uploadFile = async (blob: Blob): Promise<UploadedFile> => {
       Bucket: env.S3_BUCKET,
       Key: id,
       Body: buffer,
+      ContentType: blob.type,
     }),
   );
 
-  return { id, blob, buffer };
+  return { id };
 };
 
-export const downloadFile = async (id: string): Promise<UploadedFile | undefined> => {
-  const { Body: body } = await s3.send(
+type SignedUploadedFile = UploadedFile & {
+  url: string;
+};
+
+export const getSignedFileUrl = async (id: string): Promise<SignedUploadedFile> => {
+  const url = await getSignedUrl(
+    s3,
     new GetObjectCommand({
       Bucket: env.S3_BUCKET,
       Key: id,
     }),
   );
 
-  const buffer = body && Buffer.from(await body.transformToByteArray());
-  return buffer ? { id, blob: new Blob([buffer]), buffer } : undefined;
+  return { id, url };
 };
