@@ -1,21 +1,20 @@
 import { OpenAPIHono, createRoute } from '@hono/zod-openapi';
 import { HelloQuerySchema } from './hello.schemas';
+import { StatusCode, StatusCodeDescription } from '@shared/status-codes/status-codes.constants';
 
-const router = new OpenAPIHono();
-
-export const helloRouter = router.openapi(
+export const helloRouter = new OpenAPIHono().openapi(
   createRoute({
     method: 'get',
     path: '/',
     tags: ['Hello'],
     responses: {
-      200: {
+      [StatusCode.Ok]: {
         content: {
           'application/json': {
-            schema: HelloQuerySchema.openapi('HelloResponse'),
+            schema: HelloQuerySchema,
           },
         },
-        description: 'Say hello',
+        description: StatusCodeDescription.Ok,
       },
     },
   }),

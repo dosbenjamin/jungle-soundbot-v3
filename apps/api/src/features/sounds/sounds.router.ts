@@ -1,12 +1,18 @@
 import { OpenAPIHono, createRoute } from '@hono/zod-openapi';
-import { ErrorSchema } from '@shared/errors/errors.schemas';
-import { FileSchema } from '@shared/files/files.schemas';
-import { SoundFilterSchema, SoundMutationSchema, SoundQuerySchema } from './sounds.schemas';
-import { getSounds, createSound } from './sounds.repository';
+import {
+  SoundBadRequestErrorSchema,
+  SoundCollectionQuerySchema,
+  SoundFilterSchema,
+  SoundMutationSchema,
+  SoundQuerySchema,
+} from './sounds.schemas';
+import { getSounds } from './sounds.repository';
+import { createUniqueSound } from './sounds.services';
+import { Effect, pipe } from 'effect';
+import { StatusCode, StatusCodeDescription } from '@shared/status-codes/status-codes.constants';
+import { InternalServerErrorSchema, NotFoundErrorSchema } from '@shared/error-handling/error-handling.schemas';
 
-const router = new OpenAPIHono();
-
-export const soundsRouter = router
+export const soundsRouter = new OpenAPIHono()
   .openapi(
     createRoute({
       method: 'get',
@@ -16,19 +22,43 @@ export const soundsRouter = router
         query: SoundFilterSchema,
       },
       responses: {
-        200: {
+        [StatusCode.Ok]: {
           content: {
             'application/json': {
-              schema: SoundQuerySchema.array().openapi('SoundCollectionResponse'),
+              schema: SoundCollectionQuerySchema,
             },
           },
-          description: 'All sounds',
+          description: StatusCodeDescription.Ok,
+        },
+        [StatusCode.InternalServerError]: {
+          content: {
+            'application/json': {
+              schema: InternalServerErrorSchema,
+            },
+          },
+          description: StatusCodeDescription.InternalServerError,
         },
       },
     }),
-    async (context) => {
-      const sounds = await getSounds(context.req.valid('query'));
-      return context.jsonT(sounds);
+    (context) => {
+      return Effect.runPromise(
+        pipe(
+          getSounds(context.req.valid('query')),
+          Effect.map((sounds) => context.jsonT(sounds)),
+          Effect.catchAll(({ errorCode, message }) => {
+            return Effect.succeed(
+              context.jsonT(
+                {
+                  statusCode: StatusCode.InternalServerError,
+                  errorCode,
+                  message,
+                },
+                StatusCode.InternalServerError,
+              ),
+            );
+          }),
+        ),
+      );
     },
   )
   .openapi(
@@ -40,47 +70,90 @@ export const soundsRouter = router
         body: {
           content: {
             'multipart/form-data': {
-              schema: SoundMutationSchema.extend({
-                file: FileSchema.openapi({
-                  type: 'string',
-                  format: 'binary',
-                }),
-              }).openapi('SoundRequest', {
-                required: ['name', 'author', 'file'],
-              }),
+              schema: SoundMutationSchema,
             },
           },
         },
       },
       responses: {
-        200: {
+        [StatusCode.Ok]: {
           content: {
             'application/json': {
-              schema: SoundQuerySchema.openapi('SoundResponse'),
+              schema: SoundQuerySchema,
             },
           },
-          description: 'The created sound',
+          description: StatusCodeDescription.Ok,
         },
-        404: {
+        [StatusCode.BadRequest]: {
           content: {
             'application/json': {
-              schema: ErrorSchema,
+              schema: SoundBadRequestErrorSchema,
             },
           },
-          description: 'The requested sound was not found',
+          description: StatusCodeDescription.BadRequest,
+        },
+        [StatusCode.NotFound]: {
+          content: {
+            'application/json': {
+              schema: NotFoundErrorSchema,
+            },
+          },
+          description: StatusCodeDescription.NotFound,
+        },
+        [StatusCode.InternalServerError]: {
+          content: {
+            'application/json': {
+              schema: InternalServerErrorSchema,
+            },
+          },
+          description: StatusCodeDescription.InternalServerError,
         },
       },
     }),
-    async (context) => {
-      const sound = await createSound(context.req.valid('form'));
-      return sound
-        ? context.jsonT(sound)
-        : context.jsonT(
-            {
-              code: 404,
-              error: 'The requested sound was not found',
+    (context) => {
+      return Effect.runPromise(
+        pipe(
+          createUniqueSound(context.req.valid('form')),
+          Effect.map((sound) => context.jsonT(sound)),
+          Effect.catchTags({
+            BusinessError: ({ errorCode, message }) => {
+              return Effect.succeed(
+                context.jsonT(
+                  {
+                    statusCode: StatusCode.BadRequest,
+                    errorCode,
+                    message,
+                  },
+                  StatusCode.BadRequest,
+                ),
+              );
             },
-            404,
-          );
+            NotFoundError: ({ errorCode, message }) => {
+              return Effect.succeed(
+                context.jsonT(
+                  {
+                    statusCode: StatusCode.NotFound,
+                    errorCode,
+                    message,
+                  },
+                  StatusCode.NotFound,
+                ),
+              );
+            },
+          }),
+          Effect.catchAll(({ errorCode, message }) => {
+            return Effect.succeed(
+              context.jsonT(
+                {
+                  statusCode: StatusCode.InternalServerError,
+                  errorCode,
+                  message,
+                },
+                StatusCode.InternalServerError,
+              ),
+            );
+          }),
+        ),
+      );
     },
   );
