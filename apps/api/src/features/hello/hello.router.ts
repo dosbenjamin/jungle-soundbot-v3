@@ -18,5 +18,5 @@ export const helloRouter = new OpenAPIHono().openapi(
       },
     },
   }),
-  (context) => context.jsonT({ say: 'hello!' }),
+  (context) => context.json({ say: 'hello!' }),
 );
