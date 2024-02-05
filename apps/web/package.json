@@ -8,7 +8,8 @@
     "build": "astro check && astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "prepare": "panda codegen"
   },
   "dependencies": {
     "@astrojs/check": "^0.3.2",
@@ -23,6 +24,8 @@
   "devDependencies": {
     "@junglebot/eslint-config-custom": "workspace:*",
     "@junglebot/tsconfig": "workspace:*",
+    "@pandacss/astro": "^0.22.1",
+    "@pandacss/dev": "^0.22.1",
     "eslint": "^8.55.0"
   }
 }
