@@ -4,9 +4,10 @@ import { NotFoundError } from '@shared/error-handling/error-handling.errors';
 import { StorageError } from '@app/storage/storage.errors';
 import { DatabaseError } from '@app/database/database.errors';
 
-export interface SoundRepository {
-  readonly create: (sound: NewSound) => Effect.Effect<never, DatabaseError | StorageError | NotFoundError, Sound>;
-  readonly getAll: (filter: SoundFilter) => Effect.Effect<never, DatabaseError | StorageError, Sound[]>;
-}
-
-export const SoundRepository = Context.Tag<SoundRepository>('@features/sounds.repository');
+export class SoundRepository extends Context.Tag('SoundRepository')<
+  SoundRepository,
+  {
+    readonly create: (sound: NewSound) => Effect.Effect<Sound, DatabaseError | StorageError | NotFoundError>;
+    readonly getAll: (filter: SoundFilter) => Effect.Effect<Sound[], DatabaseError | StorageError>;
+  }
+>() {}

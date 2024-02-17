@@ -5,11 +5,12 @@ import { SoundErrorCode } from './sound.errors';
 import { NewSound, Sound, SoundFilter } from './sound.schemas';
 import { Context, Effect } from 'effect';
 
-export interface SoundService {
-  readonly create: (
-    sound: NewSound,
-  ) => Effect.Effect<never, StorageError | DatabaseError | NotFoundError | BusinessError<SoundErrorCode>, Sound>;
-  readonly getAll: (filter: SoundFilter) => Effect.Effect<never, DatabaseError | StorageError, Sound[]>;
-}
-
-export const SoundService = Context.Tag<SoundService>('@features/sounds.service');
+export class SoundService extends Context.Tag('SoundService')<
+  SoundService,
+  {
+    readonly create: (
+      sound: NewSound,
+    ) => Effect.Effect<Sound, StorageError | DatabaseError | NotFoundError | BusinessError<SoundErrorCode>>;
+    readonly getAll: (filter: SoundFilter) => Effect.Effect<Sound[], DatabaseError | StorageError>;
+  }
+>() {}

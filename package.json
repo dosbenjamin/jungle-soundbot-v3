@@ -1,6 +1,7 @@
 {
   "name": "junglebot",
   "author": "Benjamin Dos Santos",
+  "private": true,
   "scripts": {
     "format": "prettier . -w"
   },

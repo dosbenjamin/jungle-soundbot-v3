@@ -1,8 +1,8 @@
 {
   "$schema": "https://json.schemastore.org/eslintrc",
-  "extends": ["@junglebot/eslint-config-custom/base.json"],
+  "extends": ["@junglebot/eslint-config-custom/base.json", "plugin:@tanstack/eslint-plugin-query/recommended"],
   "parserOptions": {
     "tsconfigRootDir": "./apps/web",
-    "project": ["./tsconfig.json", "./tsconfig.node.json"]
+    "project": ["./tsconfig.json"]
   }
 }

@@ -25,7 +25,6 @@ export const SoundFilterSchema = createInsertSchema(soundTable, {
   author: ({ name }) => name.trim(),
 })
   .pick({ name: true, author: true })
-  // .partial()
   .openapi('SoundFilterQueryParams');
 
 export const SoundBadRequestErrorResponseSchema = BadRequestErrorResponseSchema.extend({

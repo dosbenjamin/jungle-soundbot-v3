@@ -6,12 +6,14 @@ import {
   SoundMutationSchema,
   SoundQuerySchema,
 } from './sound.schemas';
-import { Effect } from 'effect';
+import { Effect, Layer } from 'effect';
 import { StatusCode, StatusCodeDescription } from '@shared/status-codes/status-codes.constants';
 import { InternalServerErrorResponseSchema, NotFoundErrorResponseSchema } from '@shared/responses/responses.schemas';
 import { SoundServiceLive } from './sound.service.live';
 import { SoundService } from './sound.service';
 import { OkResponseSchema } from '@shared/responses/responses.schemas';
+import { SoundRepositoryLive } from '@features/sound/sound.repository.live';
+import { StorageServiceLive } from '@app/storage/storage.service.live';
 
 export const soundsRouter = new OpenAPIHono()
   .openapi(
@@ -44,6 +46,8 @@ export const soundsRouter = new OpenAPIHono()
       },
     }),
     (context) => {
+      const MainLive = SoundServiceLive.pipe(Layer.provide(SoundRepositoryLive), Layer.provide(StorageServiceLive));
+
       const program = SoundService.pipe(
         Effect.flatMap((soundService) => soundService.getAll(context.req.valid('query'))),
         Effect.map((sounds) => {
@@ -69,7 +73,7 @@ export const soundsRouter = new OpenAPIHono()
         }),
       );
 
-      const runnable = Effect.provide(program, SoundServiceLive);
+      const runnable = Effect.provide(program, MainLive);
       return Effect.runPromise(runnable);
     },
   )
@@ -125,6 +129,8 @@ export const soundsRouter = new OpenAPIHono()
       },
     }),
     (context) => {
+      const MainLive = SoundServiceLive.pipe(Layer.provide(SoundRepositoryLive), Layer.provide(StorageServiceLive));
+
       const program = SoundService.pipe(
         Effect.flatMap((soundService) => soundService.create(context.req.valid('form'))),
         Effect.map((sound) => {
@@ -176,7 +182,7 @@ export const soundsRouter = new OpenAPIHono()
         }),
       );
 
-      const runnable = Effect.provide(program, SoundServiceLive);
+      const runnable = Effect.provide(program, MainLive);
       return Effect.runPromise(runnable);
     },
   );
