@@ -46,7 +46,13 @@ export const soundsRouter = new OpenAPIHono()
       },
     }),
     (context) => {
-      const MainLive = SoundServiceLive.pipe(Layer.provide(SoundRepositoryLive), Layer.provide(StorageServiceLive));
+      const DrizzleProviderLive = context.get('DrizzleProviderLive');
+
+      const MainLive = SoundServiceLive.pipe(
+        Layer.provide(SoundRepositoryLive),
+        Layer.provide(StorageServiceLive),
+        Layer.provide(DrizzleProviderLive),
+      );
 
       const program = SoundService.pipe(
         Effect.flatMap((soundService) => soundService.getAll(context.req.valid('query'))),
@@ -129,7 +135,13 @@ export const soundsRouter = new OpenAPIHono()
       },
     }),
     (context) => {
-      const MainLive = SoundServiceLive.pipe(Layer.provide(SoundRepositoryLive), Layer.provide(StorageServiceLive));
+      const DrizzleProviderLive = context.get('DrizzleProviderLive');
+
+      const MainLive = SoundServiceLive.pipe(
+        Layer.provide(SoundRepositoryLive),
+        Layer.provide(StorageServiceLive),
+        Layer.provide(DrizzleProviderLive),
+      );
 
       const program = SoundService.pipe(
         Effect.flatMap((soundService) => soundService.create(context.req.valid('form'))),

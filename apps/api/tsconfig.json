@@ -12,7 +12,8 @@
       "@env": ["env.ts"],
       "@app/*": ["src/app/*"],
       "@shared/*": ["src/shared/*"],
-      "@features/*": ["src/features/*"]
+      "@features/*": ["src/features/*"],
+      "@providers/*": ["src/providers/*"]
     }
   },
   "include": ["./**/*.ts"]

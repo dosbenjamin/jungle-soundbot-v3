@@ -1,7 +1,7 @@
 import { NotFoundErrorCode } from '@shared/error-handling/error-handling.errors';
 import { StatusCode } from '@shared/status-codes/status-codes.constants';
-import { DatabaseErrorCode } from '@app/database/database.errors';
 import { StorageErrorCode } from '@app/storage/storage.errors';
+import { DrizzleErrorCode } from '@providers/drizzle/drizzle.errors';
 import { z } from 'zod';
 
 const ResponseSchema = z.object({
@@ -26,7 +26,7 @@ export const InternalServerErrorResponseSchema = ErrorResponseSchema.extend({
   statusCode: z.literal(StatusCode.InternalServerError),
   errorCode: z.nativeEnum({
     ...StorageErrorCode,
-    ...DatabaseErrorCode,
+    ...DrizzleErrorCode,
   }),
 }).openapi('InternalServerErrorResponse');
 
