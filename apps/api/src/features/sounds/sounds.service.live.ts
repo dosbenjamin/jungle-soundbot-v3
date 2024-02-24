@@ -1,8 +1,8 @@
 import { Effect, Layer } from 'effect';
 import { BusinessError } from '@shared/error-handling/error-handling.errors';
-import { SoundErrorCode } from './sound.errors';
-import { SoundRepository } from './sound.repository';
-import { SoundService } from './sound.service';
+import { SoundErrorCode } from './sounds.errors';
+import { SoundRepository } from './sounds.repository';
+import { SoundService } from './sounds.service';
 
 export const SoundServiceLive = Layer.effect(
   SoundService,

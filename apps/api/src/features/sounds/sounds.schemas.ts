@@ -1,18 +1,18 @@
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
 import { FileSchema } from '@shared/files/files.schemas';
-import { soundTable } from './sound.model';
-import { SoundErrorCode } from './sound.errors';
+import { soundsTable } from './sounds.model';
+import { SoundErrorCode } from './sounds.errors';
 import { BadRequestErrorResponseSchema } from '@shared/responses/responses.schemas';
 
-export const SoundQuerySchema = createSelectSchema(soundTable)
+export const SoundQuerySchema = createSelectSchema(soundsTable)
   .omit({ fileId: true })
   .extend({ fileUrl: z.string().url() })
   .openapi('SoundResponse');
 
 export const SoundCollectionQuerySchema = SoundQuerySchema.array().openapi('SoundCollectionResponse');
 
-export const SoundMutationSchema = createInsertSchema(soundTable, {
+export const SoundMutationSchema = createInsertSchema(soundsTable, {
   name: ({ name }) => name.min(1).trim(),
   author: ({ author }) => author.min(1).trim(),
 })
@@ -20,7 +20,7 @@ export const SoundMutationSchema = createInsertSchema(soundTable, {
   .extend({ file: FileSchema })
   .openapi('SoundRequest', { required: ['name', 'author', 'file'] });
 
-export const SoundFilterSchema = createInsertSchema(soundTable, {
+export const SoundFilterSchema = createInsertSchema(soundsTable, {
   name: ({ name }) => name.trim(),
   author: ({ name }) => name.trim(),
 })

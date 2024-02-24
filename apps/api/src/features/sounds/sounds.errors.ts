@@ -1,4 +1,4 @@
 export const SoundErrorCode = {
-  NameAlreadyUsed: 'Sounds.NameAlreadyUsed',
+  NameAlreadyUsed: 'Sound.NameAlreadyUsed',
 } as const;
 export type SoundErrorCode = (typeof SoundErrorCode)[keyof typeof SoundErrorCode];

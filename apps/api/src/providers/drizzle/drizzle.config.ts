@@ -1,7 +1,7 @@
-import { soundTable } from '@features/sound/sound.model';
+import { soundsTable } from '@features/sounds/sounds.model';
 
 export const drizzleConfig = {
   schema: {
-    sounds: soundTable,
+    sounds: soundsTable,
   },
 };

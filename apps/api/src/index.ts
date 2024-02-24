@@ -2,8 +2,7 @@ import { swaggerUI } from '@hono/swagger-ui';
 import { cors } from 'hono/cors';
 import { OpenAPIHono } from '@hono/zod-openapi';
 import { env } from '@env';
-import { soundsRouter } from '@features/sound/sound.router';
-export { SoundMutationSchema } from '@features/sound/sound.schemas';
+import { soundsRouter } from '@features/sounds/sounds.router';
 import { helloRouter } from '@features/hello/hello.router';
 import { injectDrizzleProvider } from '@providers/drizzle/drizzle.middleware';
 
@@ -26,3 +25,4 @@ router.doc31('/doc', {
 
 export default router;
 export type AppType = typeof app;
+export { SoundMutationSchema } from '@features/sounds/sounds.schemas';

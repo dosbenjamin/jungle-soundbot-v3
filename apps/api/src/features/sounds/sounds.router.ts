@@ -5,14 +5,14 @@ import {
   SoundFilterSchema,
   SoundMutationSchema,
   SoundQuerySchema,
-} from './sound.schemas';
+} from './sounds.schemas';
 import { Effect, Layer } from 'effect';
 import { StatusCode, StatusCodeDescription } from '@shared/status-codes/status-codes.constants';
 import { InternalServerErrorResponseSchema, NotFoundErrorResponseSchema } from '@shared/responses/responses.schemas';
-import { SoundServiceLive } from './sound.service.live';
-import { SoundService } from './sound.service';
+import { SoundService } from './sounds.service';
+import { SoundServiceLive } from './sounds.service.live';
+import { SoundRepositoryLive } from './sounds.repository.live';
 import { OkResponseSchema } from '@shared/responses/responses.schemas';
-import { SoundRepositoryLive } from '@features/sound/sound.repository.live';
 import { StorageProviderLive } from '@providers/storage/storage.provider.live';
 
 export const soundsRouter = new OpenAPIHono()

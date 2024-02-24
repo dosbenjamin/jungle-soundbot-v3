@@ -1,6 +1,6 @@
-import { SoundRepository } from '@features/sound/sound.repository';
 import { Effect, Layer } from 'effect';
-import { soundTable } from '@features/sound/sound.model';
+import { SoundRepository } from './sounds.repository';
+import { soundsTable } from './sounds.model';
 import { eq, or } from 'drizzle-orm';
 import { NotFoundError } from '@shared/error-handling/error-handling.errors';
 import { DrizzleProvider } from '@providers/drizzle/drizzle.provider';
@@ -19,7 +19,7 @@ export const SoundRepositoryLive = Layer.effect(
               return Effect.tryPromise({
                 try: () => {
                   return database
-                    .insert(soundTable)
+                    .insert(soundsTable)
                     .values({ ...newSound, fileId: id })
                     .returning()
                     .execute();
@@ -47,9 +47,12 @@ export const SoundRepositoryLive = Layer.effect(
             try: () => {
               return database
                 .select()
-                .from(soundTable)
+                .from(soundsTable)
                 .where(
-                  or(name ? eq(soundTable.name, name) : undefined, author ? eq(soundTable.author, author) : undefined),
+                  or(
+                    name ? eq(soundsTable.name, name) : undefined,
+                    author ? eq(soundsTable.author, author) : undefined,
+                  ),
                 )
                 .execute();
             },
