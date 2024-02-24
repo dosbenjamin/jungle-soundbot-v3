@@ -1,7 +1,7 @@
 import { Data } from 'effect';
 
 export const DrizzleErrorCode = {
-  DrizzleError: 'Drizzle.DrizzleError',
+  DrizzleError: 'Drizzle.Error',
   UnknownError: 'Drizzle.UnknownError',
 } as const;
 export type DrizzleErrorCode = (typeof DrizzleErrorCode)[keyof typeof DrizzleErrorCode];
