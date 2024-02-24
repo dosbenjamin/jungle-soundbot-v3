@@ -1,20 +1,20 @@
-import { StorageService } from '@app/storage/storage.service';
 import { SoundRepository } from '@features/sound/sound.repository';
 import { Effect, Layer } from 'effect';
 import { soundTable } from '@features/sound/sound.model';
 import { eq, or } from 'drizzle-orm';
 import { NotFoundError } from '@shared/error-handling/error-handling.errors';
 import { DrizzleProvider } from '@providers/drizzle/drizzle.provider';
+import { StorageProvider } from '@providers/storage/storage.provider';
 
 export const SoundRepositoryLive = Layer.effect(
   SoundRepository,
-  Effect.all([StorageService, DrizzleProvider]).pipe(
-    Effect.map(([storageService, drizzleProvider]) => {
+  Effect.all([StorageProvider, DrizzleProvider]).pipe(
+    Effect.map(([storageProvider, drizzleProvider]) => {
       const database = Effect.runSync(drizzleProvider.getDatabase());
 
       return SoundRepository.of({
         create: ({ file, ...newSound }) => {
-          return storageService.putFile(file).pipe(
+          return storageProvider.putFile(file).pipe(
             Effect.flatMap(({ id }) => {
               return Effect.tryPromise({
                 try: () => {
@@ -25,7 +25,7 @@ export const SoundRepositoryLive = Layer.effect(
                     .execute();
                 },
                 catch: (error) => {
-                  return storageService.deleteFile(id).pipe(
+                  return storageProvider.deleteFile(id).pipe(
                     Effect.flatMap(() => drizzleProvider.invokeError(error)),
                     Effect.runSync,
                   );
@@ -36,7 +36,7 @@ export const SoundRepositoryLive = Layer.effect(
               return sound ? Effect.succeed(sound) : Effect.fail(new NotFoundError({ message: 'Sound was not found' }));
             }),
             Effect.flatMap(({ fileId, ...sound }) => {
-              return storageService
+              return storageProvider
                 .getSignedFileUrl(fileId)
                 .pipe(Effect.map(({ url }) => ({ ...sound, fileUrl: url })));
             }),
@@ -58,7 +58,7 @@ export const SoundRepositoryLive = Layer.effect(
             Effect.flatMap((sounds) => {
               return Effect.all(
                 sounds.map(({ fileId, ...sound }) => {
-                  return storageService
+                  return storageProvider
                     .getSignedFileUrl(fileId)
                     .pipe(Effect.map(({ url }) => ({ ...sound, fileUrl: url })));
                 }),

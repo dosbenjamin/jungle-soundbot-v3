@@ -1,6 +1,6 @@
 import { NotFoundErrorCode } from '@shared/error-handling/error-handling.errors';
 import { StatusCode } from '@shared/status-codes/status-codes.constants';
-import { StorageErrorCode } from '@app/storage/storage.errors';
+import { StorageErrorCode } from '@providers/storage/storage.errors';
 import { DrizzleErrorCode } from '@providers/drizzle/drizzle.errors';
 import { z } from 'zod';
 

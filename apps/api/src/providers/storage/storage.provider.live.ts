@@ -1,6 +1,6 @@
-import { StorageErrorInvokationOptions } from '@app/storage/storage.types';
+import { StorageErrorInvokationOptions } from './storage.types';
 import { StorageError, StorageErrorCode } from './storage.errors';
-import { StorageService } from './storage.service';
+import { StorageProvider } from './storage.provider';
 import {
   DeleteObjectCommand,
   GetObjectCommand,
@@ -12,7 +12,7 @@ import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { env } from '@env';
 import { Effect, Layer } from 'effect';
 
-export const StorageServiceLive = Layer.sync(StorageService, () => {
+export const StorageProviderLive = Layer.sync(StorageProvider, () => {
   const client = new S3Client({
     region: 'auto',
     endpoint: env.S3_URL,
@@ -73,8 +73,6 @@ export const StorageServiceLive = Layer.sync(StorageService, () => {
               Key: id,
             }),
           );
-
-          return Effect.succeedNone;
         },
         catch: (error) => {
           return invokeError(error, {

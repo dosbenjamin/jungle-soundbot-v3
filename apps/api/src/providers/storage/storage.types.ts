@@ -1,4 +1,4 @@
-import type { StorageErrorCode } from '@app/storage/storage.errors';
+import type { StorageErrorCode } from './storage.errors';
 
 export type UploadedFile = {
   id: string;

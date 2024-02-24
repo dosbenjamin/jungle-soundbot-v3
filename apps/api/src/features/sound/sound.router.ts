@@ -13,7 +13,7 @@ import { SoundServiceLive } from './sound.service.live';
 import { SoundService } from './sound.service';
 import { OkResponseSchema } from '@shared/responses/responses.schemas';
 import { SoundRepositoryLive } from '@features/sound/sound.repository.live';
-import { StorageServiceLive } from '@app/storage/storage.service.live';
+import { StorageProviderLive } from '@providers/storage/storage.provider.live';
 
 export const soundsRouter = new OpenAPIHono()
   .openapi(
@@ -50,7 +50,7 @@ export const soundsRouter = new OpenAPIHono()
 
       const MainLive = SoundServiceLive.pipe(
         Layer.provide(SoundRepositoryLive),
-        Layer.provide(StorageServiceLive),
+        Layer.provide(StorageProviderLive),
         Layer.provide(DrizzleProviderLive),
       );
 
@@ -139,7 +139,7 @@ export const soundsRouter = new OpenAPIHono()
 
       const MainLive = SoundServiceLive.pipe(
         Layer.provide(SoundRepositoryLive),
-        Layer.provide(StorageServiceLive),
+        Layer.provide(StorageProviderLive),
         Layer.provide(DrizzleProviderLive),
       );
 

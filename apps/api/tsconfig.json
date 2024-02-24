@@ -10,7 +10,6 @@
     "baseUrl": "./",
     "paths": {
       "@env": ["env.ts"],
-      "@app/*": ["src/app/*"],
       "@shared/*": ["src/shared/*"],
       "@features/*": ["src/features/*"],
       "@providers/*": ["src/providers/*"]
