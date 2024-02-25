@@ -1,0 +1,22 @@
+name = "junglebot-api"
+main = "src/index.ts"
+
+compatibility_date = "2024-02-24"
+compatibility_flags = ["nodejs_compat"]
+
+send_metrics = false
+
+[vars]
+WEB_APP_URL = "http://localhost:4321"
+
+[[r2_buckets]]
+binding = "bucket"
+bucket_name = "junglebot2"
+preview_bucket_name = "junglebot2"
+
+[[d1_databases]]
+binding = "database"
+database_name = "junglebot"
+database_id = "83595de5-7784-47df-92f2-e53376642ade"
+preview_database_id = "83595de5-7784-47df-92f2-e53376642ade"
+migrations_dir = "drizzle"

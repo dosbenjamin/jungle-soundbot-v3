@@ -5,7 +5,9 @@ import { soundsTable } from './sounds.model';
 import { SoundErrorCode } from './sounds.errors';
 import { BadRequestErrorResponseSchema } from '@shared/responses/responses.schemas';
 
-export const SoundQuerySchema = createSelectSchema(soundsTable)
+export const SoundQuerySchema = createSelectSchema(soundsTable, {
+  createdAt: ({ createdAt }) => createdAt.transform((date) => date.toString()),
+})
   .omit({ fileId: true })
   .extend({ fileUrl: z.string().url() })
   .openapi('SoundResponse');

@@ -6,10 +6,9 @@
     "esModuleInterop": true,
     "jsx": "react-jsx",
     "jsxImportSource": "hono/jsx",
-    "types": ["@types/bun"],
+    "types": ["@cloudflare/workers-types"],
     "baseUrl": "./",
     "paths": {
-      "@env": ["env.ts"],
       "@shared/*": ["src/shared/*"],
       "@features/*": ["src/features/*"],
       "@providers/*": ["src/providers/*"]

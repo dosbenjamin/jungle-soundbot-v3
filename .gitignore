@@ -176,3 +176,6 @@ dist
 
 # Panda
 styled-system/
+
+# Wrangler
+.wrangler/

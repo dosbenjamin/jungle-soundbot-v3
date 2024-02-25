@@ -1,4 +1,4 @@
 import { drizzleConfig } from '@providers/drizzle/drizzle.config';
-import { PostgresJsDatabase } from 'drizzle-orm/postgres-js';
+import { DrizzleD1Database } from 'drizzle-orm/d1';
 
-export type Drizzle = PostgresJsDatabase<typeof drizzleConfig>;
+export type Drizzle = DrizzleD1Database<typeof drizzleConfig>;

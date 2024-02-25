@@ -47,11 +47,13 @@ export const soundsRouter = new OpenAPIHono()
     }),
     (context) => {
       const DrizzleProviderLive = context.get('DrizzleProviderLive');
+      const EnvironmentProviderLive = context.get('EnvironmentProviderLive');
 
       const MainLive = SoundServiceLive.pipe(
         Layer.provide(SoundRepositoryLive),
         Layer.provide(StorageProviderLive),
         Layer.provide(DrizzleProviderLive),
+        Layer.provide(EnvironmentProviderLive),
       );
 
       const program = SoundService.pipe(
@@ -136,11 +138,13 @@ export const soundsRouter = new OpenAPIHono()
     }),
     (context) => {
       const DrizzleProviderLive = context.get('DrizzleProviderLive');
+      const EnvironmentProviderLive = context.get('EnvironmentProviderLive');
 
       const MainLive = SoundServiceLive.pipe(
         Layer.provide(SoundRepositoryLive),
         Layer.provide(StorageProviderLive),
         Layer.provide(DrizzleProviderLive),
+        Layer.provide(EnvironmentProviderLive),
       );
 
       const program = SoundService.pipe(

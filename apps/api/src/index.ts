@@ -1,15 +1,16 @@
 import { swaggerUI } from '@hono/swagger-ui';
 import { cors } from 'hono/cors';
 import { OpenAPIHono } from '@hono/zod-openapi';
-import { env } from '@env';
 import { soundsRouter } from '@features/sounds/sounds.router';
 import { helloRouter } from '@features/hello/hello.router';
 import { injectDrizzleProvider } from '@providers/drizzle/drizzle.middleware';
+import { injectEnvironmentProvider } from '@providers/environment/environment.middleware';
+import type { Env } from '@shared/env/env.types';
 
-const router = new OpenAPIHono();
-
+const router = new OpenAPIHono<Env>();
 const app = router
-  .use('*', cors({ origin: [env.WEB_APP_URL] }))
+  .use('*', (context, next) => cors({ origin: [context.env.WEB_APP_URL] })(context, next))
+  .use('*', injectEnvironmentProvider())
   .use('*', injectDrizzleProvider())
   .get('/swagger', swaggerUI({ url: '/doc' }))
   .route('/hello', helloRouter)

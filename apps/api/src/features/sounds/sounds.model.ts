@@ -1,9 +1,16 @@
-import { pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core';
+import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 
-export const soundsTable = pgTable('sounds', {
-  id: uuid('id').defaultRandom().primaryKey(),
-  name: text('name').notNull().unique(),
+export const soundsTable = sqliteTable('sounds', {
+  id: text('id')
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID())
+    .notNull(),
+  name: text('name').unique().notNull(),
   author: text('author').notNull(),
-  fileId: uuid('file_id').notNull(),
-  createdAt: timestamp('created_at', { mode: 'string' }).notNull().defaultNow(),
+  fileId: text('file_id')
+    .$defaultFn(() => crypto.randomUUID())
+    .notNull(),
+  createdAt: integer('created_at', { mode: 'timestamp_ms' })
+    .$defaultFn(() => new Date())
+    .notNull(),
 });

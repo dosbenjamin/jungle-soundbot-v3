@@ -1,22 +1,18 @@
-import { drizzle } from 'drizzle-orm/postgres-js';
+import { drizzle } from 'drizzle-orm/d1';
 import { DrizzleProvider } from './drizzle.provider';
 import { drizzleConfig } from './drizzle.config';
 import { Effect, Layer } from 'effect';
 import { MiddlewareHandler } from 'hono';
-import postgres from 'postgres';
-import { env } from '@env';
 import { DrizzleError as DrizzleLibraryError } from 'drizzle-orm';
 import { DrizzleError, DrizzleErrorCode } from './drizzle.errors';
+import type { Env } from '@shared/env/env.types';
 
-export const injectDrizzleProvider: () => MiddlewareHandler = () => {
-  const queryClient = postgres(env.DATABASE_URL);
-  const database = drizzle(queryClient, drizzleConfig);
-
+export const injectDrizzleProvider: () => MiddlewareHandler<Env> = () => {
   return async (context, next) => {
     context.set(
       'DrizzleProviderLive',
       Layer.sync(DrizzleProvider, () => ({
-        getDatabase: () => Effect.sync(() => database),
+        getDatabase: () => Effect.sync(() => drizzle(context.env.database, drizzleConfig)),
         invokeError: (error) => {
           if (error instanceof DrizzleLibraryError) {
             return new DrizzleError({
