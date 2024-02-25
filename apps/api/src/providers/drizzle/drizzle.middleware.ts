@@ -1,7 +1,7 @@
 import { drizzle } from 'drizzle-orm/d1';
 import { DrizzleProvider } from './drizzle.provider';
 import { drizzleConfig } from './drizzle.config';
-import { Effect, Layer } from 'effect';
+import { Layer } from 'effect';
 import { MiddlewareHandler } from 'hono';
 import { DrizzleError as DrizzleLibraryError } from 'drizzle-orm';
 import { DrizzleError, DrizzleErrorCode } from './drizzle.errors';
@@ -12,7 +12,7 @@ export const injectDrizzleProvider: () => MiddlewareHandler<Env> = () => {
     context.set(
       'DrizzleProviderLive',
       Layer.sync(DrizzleProvider, () => ({
-        getDatabase: () => Effect.sync(() => drizzle(context.env.database, drizzleConfig)),
+        database: drizzle(context.env.database, drizzleConfig),
         invokeError: (error) => {
           if (error instanceof DrizzleLibraryError) {
             return new DrizzleError({

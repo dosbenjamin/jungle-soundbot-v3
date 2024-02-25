@@ -1,11 +1,11 @@
 import type { DrizzleError } from '@providers/drizzle/drizzle.errors';
 import type { Drizzle } from '@providers/drizzle/drizzle.types';
-import { Context, type Effect } from 'effect';
+import { Context } from 'effect';
 
 export class DrizzleProvider extends Context.Tag('DrizzleProvider')<
   DrizzleProvider,
   {
-    readonly getDatabase: () => Effect.Effect<Drizzle>;
+    readonly database: Drizzle;
     readonly invokeError: (error: unknown) => DrizzleError;
   }
 >() {}

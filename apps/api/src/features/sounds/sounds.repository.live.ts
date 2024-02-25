@@ -9,9 +9,7 @@ import { StorageProvider } from '@providers/storage/storage.provider';
 export const SoundRepositoryLive = Layer.effect(
   SoundRepository,
   Effect.all([StorageProvider, DrizzleProvider]).pipe(
-    Effect.map(([storageProvider, drizzleProvider]) => {
-      const database = Effect.runSync(drizzleProvider.getDatabase());
-
+    Effect.map(([storageProvider, { database, invokeError }]) => {
       return SoundRepository.of({
         create: ({ file, ...newSound }) => {
           return storageProvider.putFile(file).pipe(
@@ -26,7 +24,7 @@ export const SoundRepositoryLive = Layer.effect(
                 },
                 catch: (error) => {
                   return storageProvider.deleteFile(id).pipe(
-                    Effect.flatMap(() => drizzleProvider.invokeError(error)),
+                    Effect.flatMap(() => invokeError(error)),
                     Effect.runSync,
                   );
                 },
@@ -54,7 +52,7 @@ export const SoundRepositoryLive = Layer.effect(
                 )
                 .execute();
             },
-            catch: (error) => drizzleProvider.invokeError(error),
+            catch: (error) => invokeError(error),
           }).pipe(
             Effect.flatMap((sounds) => {
               return Effect.all(
