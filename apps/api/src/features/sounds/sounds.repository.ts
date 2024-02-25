@@ -8,6 +8,6 @@ export class SoundRepository extends Context.Tag('SoundRepository')<
   SoundRepository,
   {
     readonly create: (sound: NewSound) => Effect.Effect<Sound, DrizzleError | StorageError | NotFoundError>;
-    readonly getAll: (filter: SoundFilter) => Effect.Effect<Sound[], DrizzleError | StorageError>;
+    readonly getAll: (filter: SoundFilter) => Effect.Effect<Sound[], DrizzleError>;
   }
 >() {}

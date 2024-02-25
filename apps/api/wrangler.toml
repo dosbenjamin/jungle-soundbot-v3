@@ -4,15 +4,14 @@ main = "src/index.ts"
 compatibility_date = "2024-02-24"
 compatibility_flags = ["nodejs_compat"]
 
-send_metrics = false
+workers_dev = true
 
-[vars]
-WEB_APP_URL = "http://localhost:4321"
+send_metrics = false
 
 [[r2_buckets]]
 binding = "bucket"
-bucket_name = "junglebot2"
-preview_bucket_name = "junglebot2"
+bucket_name = "junglebot"
+preview_bucket_name = "junglebot"
 
 [[d1_databases]]
 binding = "database"

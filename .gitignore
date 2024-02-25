@@ -179,3 +179,4 @@ styled-system/
 
 # Wrangler
 .wrangler/
+.dev.vars

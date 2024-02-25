@@ -10,7 +10,7 @@ export const soundsTable = sqliteTable('sounds', {
   fileId: text('file_id')
     .$defaultFn(() => crypto.randomUUID())
     .notNull(),
-  createdAt: integer('created_at', { mode: 'timestamp_ms' })
-    .$defaultFn(() => new Date())
+  createdAt: integer('created_at')
+    .$defaultFn(() => Date.now())
     .notNull(),
 });

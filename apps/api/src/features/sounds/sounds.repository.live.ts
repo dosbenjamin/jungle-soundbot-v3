@@ -36,9 +36,7 @@ export const SoundRepositoryLive = Layer.effect(
               return sound ? Effect.succeed(sound) : Effect.fail(new NotFoundError({ message: 'Sound was not found' }));
             }),
             Effect.flatMap(({ fileId, ...sound }) => {
-              return storageProvider
-                .getSignedFileUrl(fileId)
-                .pipe(Effect.map(({ url }) => ({ ...sound, fileUrl: url })));
+              return storageProvider.getFileUrl(fileId).pipe(Effect.map((url) => ({ ...sound, fileUrl: url })));
             }),
           );
         },
@@ -61,9 +59,7 @@ export const SoundRepositoryLive = Layer.effect(
             Effect.flatMap((sounds) => {
               return Effect.all(
                 sounds.map(({ fileId, ...sound }) => {
-                  return storageProvider
-                    .getSignedFileUrl(fileId)
-                    .pipe(Effect.map(({ url }) => ({ ...sound, fileUrl: url })));
+                  return storageProvider.getFileUrl(fileId).pipe(Effect.map((url) => ({ ...sound, fileUrl: url })));
                 }),
               );
             }),

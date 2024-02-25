@@ -11,6 +11,6 @@ export class SoundService extends Context.Tag('SoundService')<
     readonly create: (
       sound: NewSound,
     ) => Effect.Effect<Sound, StorageError | DrizzleError | NotFoundError | BusinessError<SoundErrorCode>>;
-    readonly getAll: (filter: SoundFilter) => Effect.Effect<Sound[], DrizzleError | StorageError>;
+    readonly getAll: (filter: SoundFilter) => Effect.Effect<Sound[], DrizzleError>;
   }
 >() {}

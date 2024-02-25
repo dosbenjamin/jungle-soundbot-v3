@@ -3,7 +3,6 @@ import { Data } from 'effect';
 export const StorageErrorCode = {
   UploadToS3Bucket: 'Storage.UploadToS3Bucket',
   DeleteFromS3Bucket: 'Storage.DeleteFromS3Bucket',
-  GetS3SignedUrl: 'Storage.GetS3SignedUrl',
 } as const;
 export type StorageErrorCode = (typeof StorageErrorCode)[keyof typeof StorageErrorCode];
 
